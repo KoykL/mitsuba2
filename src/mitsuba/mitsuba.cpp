@@ -15,6 +15,11 @@
 #include <mitsuba/render/scene.h>
 #include <tbb/task_scheduler_init.h>
 
+#if defined(MTS_ENABLE_OPTIX)
+#include <mitsuba/render/optix_api.h>
+#endif
+
+
 #if !defined(__WINDOWS__)
 #  include <signal.h>
 #endif
@@ -169,8 +174,13 @@ int main(int argc, char *argv[]) {
             arg_define = arg_define->next();
         }
         std::string mode = (*arg_mode ? arg_mode->as_string() : MTS_DEFAULT_VARIANT);
-        if (string::starts_with(mode, "gpu"))
+
+#if defined(MTS_ENABLE_OPTIX)
+        if (string::starts_with(mode, "gpu")) {
             cie_alloc();
+            optix_initialize();
+        }
+#endif
 
         size_t sensor_i  = (*arg_sensor_i ? arg_sensor_i->as_int() : 0);
 
@@ -263,5 +273,8 @@ int main(int argc, char *argv[]) {
     Thread::static_shutdown();
     Class::static_shutdown();
     Jit::static_shutdown();
+#if defined(MTS_ENABLE_OPTIX)
+    optix_shutdown();
+#endif
     return error_msg.empty() ? 0 : -1;
 }

@@ -59,13 +59,6 @@ MTS_PY_EXPORT(Shape) {
              "name"_a, "vertex_count"_a, "face_count"_a,
              "props"_a = Properties(), "has_vertex_normals"_a = false,
              "has_vertex_texcoords"_a = false, D(Mesh, Mesh))
-        .def(py::init<const std::string &, uintptr_t, uintptr_t, uintptr_t,
-                      uintptr_t, uintptr_t, uintptr_t, uintptr_t, uintptr_t,
-                      short, const ScalarTransform4f &, const Properties &>(),
-             "name"_a, "loop_tri_count"_a, "loop_tri_ptr"_a, "loop_ptr"_a,
-             "vertex_count"_a, "vertex_ptr"_a, "poly_ptr"_a, "uv_ptr"_a,
-             "col_ptr"_a, "mat_nr"_a, "to_world"_a, "props"_a = Properties(),
-             "Constructor to call from Blender")
         .def_method(Mesh, vertex_count)
         .def_method(Mesh, face_count)
         .def_method(Mesh, has_vertex_normals)
@@ -90,7 +83,7 @@ MTS_PY_EXPORT(Shape) {
              D(Mesh, faces_buffer), py::return_value_policy::reference_internal)
         .def("attribute_buffer", &Mesh::attribute_buffer, "name"_a,
              D(Mesh, attribute_buffer), py::return_value_policy::reference_internal)
-        .def("add_attribute", &Mesh::add_attribute, "name"_a, "size"_a,
+        .def("add_attribute", &Mesh::add_attribute, "name"_a, "size"_a, "buffer"_a,
              D(Mesh, add_attribute), py::return_value_policy::reference_internal)
         .def("ray_intersect_triangle", vectorize(&Mesh::ray_intersect_triangle),
              "index"_a, "ray"_a, "active"_a = true,
