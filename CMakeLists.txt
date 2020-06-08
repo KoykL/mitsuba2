@@ -533,6 +533,7 @@ endif()
 
 # Register the Mitsuba codebase
 add_subdirectory(src)
+add_subdirectory(myplugins)
 
 # Copy dependencies into the 'dist' directory
 foreach(ITEM ${MITSUBA_DIST})
